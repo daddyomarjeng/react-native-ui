@@ -28,6 +28,8 @@ export default defineConfig([
           tabWidth: 2,
           trailingComma: 'es5',
           useTabs: false,
+          printWidth: 100,
+          endOfLine: "auto"
         },
       ],
     },

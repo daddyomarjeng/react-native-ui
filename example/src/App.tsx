@@ -1,13 +1,14 @@
-import { multiply } from '@doj/react-native-ui';
-import { Text, View, StyleSheet } from 'react-native';
+import { Box, Text } from '@doj/react-native-ui';
+import { StyleSheet, Text as RNText } from 'react-native';
 
-const result = multiply(3, 7);
+const result = 25;
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
-    </View>
+    <Box style={styles.container} backgroundColor={'lightblue'} sx={{}}>
+      <Text sx={{}}>Result: {result}</Text>
+      <RNText>Result: {result}</RNText>
+    </Box>
   );
 }
 
