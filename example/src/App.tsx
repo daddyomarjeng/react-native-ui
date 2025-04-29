@@ -8,7 +8,7 @@ export default function App() {
     <Box style={styles.container} backgroundColor={'lightblue'} sx={{}}>
       <Text sx={{}}>Result: {result}</Text>
       <RNText>Result: {result}</RNText>
-      <Button title="Hello" />
+      <Button title="Hello" p={100} />
     </Box>
   );
 }

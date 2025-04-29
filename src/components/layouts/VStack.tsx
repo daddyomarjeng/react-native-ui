@@ -42,7 +42,7 @@ export const VStack = forwardRef<View, VStackProps>(({ sx, style, children, ...r
   const sxStyles = parseSx({ ...(sx || {}), fld: 'column' });
   const { parsedSx } = mergeSx(rest);
   return (
-    <View ref={ref} {...rest} style={[parsedSx, sxStyles, style]}>
+    <View ref={ref} {...rest} style={[sxStyles, parsedSx, style]}>
       {children}
     </View>
   );

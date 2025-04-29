@@ -8,43 +8,107 @@ import {
   type ViewStyle,
   type TextStyle,
 } from 'react-native';
-import { parseSx, type StyleProp } from '../../utils/sx';
+import { mergeSx, parseSx, type StyleProp } from '../../utils/sx';
 import { sizes } from '../../utils/sizes';
 import { Text } from '../typography/Text';
 
 /**
- * A fully customizable Button component.
- *
- * ## Props
- * - `title`: Button title text.
- * - `loading`: Whether to show a loading indicator.
- * - `left`: Component to render on the left side.
- * - `right`: Component to render on the right side.
- * - `bg`: Background color.
- * - `disabledBg`: Background color when disabled.
- * - `textColor`: Text color.
- * - `disabledTextColor`: Text color when disabled.
- * - `textSize`: Text size ('sm', 'md', 'lg' or number).
- * - `sx`: Shortcut styles.
- * - `style`: Additional style for the button.
- * - `textStyle`: Additional style for the text.
- * - `children`: Render custom children instead of title.
+ * Props for the Button component
  */
 export interface ButtonProps extends TouchableOpacityProps, StyleProp {
+  /** Text to display inside the button */
   title?: string;
+
+  /** Additional style for the button container */
   style?: ViewStyle | ViewStyle[];
+
+  /** Style specifically for the button's text */
   textStyle?: TextStyle;
+
+  /** When true, shows a loading spinner instead of content
+   * @default false
+   */
   loading?: boolean;
+
+  /** Color of the loading spinner
+   * @default same as textColor
+   */
   loaderColor?: string;
+
+  /** Component to render on the left side of the button text */
   leftComponent?: React.ReactNode;
+
+  /** Component to render on the right side of the button text */
   rightComponent?: React.ReactNode;
+
+  /** Background color when button is disabled
+   * @default '#ccc'
+   */
   disabledBg?: string;
+
+  /** Text color when button is disabled
+   * @default '#eee'
+   */
   disabledTextColor?: string;
+
+  /** Background color of the button
+   * @default '#007bff'
+   */
   bg?: string;
+
+  /** Color of the button text
+   * @default '#fff'
+   */
   textColor?: string;
+
+  /** Size of the button text. Can be a predefined size or number
+   * @default 'md'
+   */
   textSize?: keyof typeof sizes.fontSizes | number;
 }
 
+/**
+ * A customizable button component that supports various states and styling options.
+ *
+ * @example
+ * Basic usage:
+ * ```tsx
+ * <Button title="Click me" onPress={() => {}} />
+ * ```
+ *
+ * @example
+ * With custom styling:
+ * ```tsx
+ * <Button
+ *   title="Submit"
+ *   bg="#4CAF50"
+ *   textColor="#fff"
+ *   sx={{ p: 15, rounded: 8 }}
+ * />
+ * ```
+ *
+ * @example
+ * Loading state:
+ * ```tsx
+ * <Button
+ *   loading={isLoading}
+ *   title="Loading..."
+ *   loaderColor="#fff"
+ * />
+ * ```
+ *
+ * @example
+ * With icons:
+ * ```tsx
+ * <Button
+ *   title="Settings"
+ *   leftComponent={<Icon name="settings" />}
+ *   sx={{ gap: 8 }}
+ * />
+ * ```
+ *
+ * @component
+ */
 export const Button = forwardRef<View, ButtonProps>(
   (
     {
@@ -71,12 +135,13 @@ export const Button = forwardRef<View, ButtonProps>(
     const finalTextColor = disabled ? disabledTextColor : textColor;
 
     const containerStyles = [{ backgroundColor }, parseSx({ p: 10, rounded: 5, ...sx }), style];
+    const { parsedSx } = mergeSx(rest);
 
     return (
       <TouchableOpacity
         ref={ref}
         disabled={disabled || loading}
-        style={containerStyles}
+        style={[containerStyles, parsedSx]}
         activeOpacity={0.8}
         {...rest}
       >

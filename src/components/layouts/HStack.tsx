@@ -41,7 +41,7 @@ export const HStack = forwardRef<View, HStackProps>(({ sx, style, children, ...r
   const sxStyles = parseSx({ ...(sx || {}), fld: 'row' });
   const { parsedSx } = mergeSx(rest);
   return (
-    <View ref={ref} {...rest} style={[parsedSx, sxStyles, style]}>
+    <View ref={ref} {...rest} style={[sxStyles, parsedSx, style]}>
       {children}
     </View>
   );

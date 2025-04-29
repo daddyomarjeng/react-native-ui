@@ -33,7 +33,7 @@ export const Box = forwardRef<View, BoxProps>(({ children, style, sx, ...rest },
   const { parsedSx } = mergeSx(rest);
 
   return (
-    <View ref={ref} {...rest} style={[parsedSx, sxStyles, style]}>
+    <View ref={ref} {...rest} style={[sxStyles, parsedSx, style]}>
       {children}
     </View>
   );
