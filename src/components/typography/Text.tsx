@@ -2,6 +2,7 @@ import React, { forwardRef } from 'react';
 import { Text as RNText, type TextStyle } from 'react-native';
 import { fontSizes, sizes } from '../../utils/sizes';
 import { mergeSx, parseSx, type StyleProp, type SXProps } from '../../utils/sx';
+import { useTheme } from '../../theme';
 
 /** Supported text alignment options */
 export type TextAlign = 'left' | 'center' | 'right' | 'justify';
@@ -113,7 +114,7 @@ export const Text = forwardRef<RNText, TextProps>(
     {
       sx,
       size = 'base',
-      color = '#000',
+      color,
       align,
       muted = false,
       underline,
@@ -125,12 +126,13 @@ export const Text = forwardRef<RNText, TextProps>(
     },
     ref
   ) => {
+    const { colors } = useTheme();
     const getFontSize = (textSize: TextSize) =>
       typeof textSize === 'number' ? textSize : sizes.fontSizes[textSize];
 
     const textStyle: TextStyle = {
       fontSize: getFontSize(size as TextSize),
-      color: muted ? '#888' : color,
+      color: muted ? colors.muted : color || colors.text,
       textAlign: align,
       ...(underline && { textDecorationLine: 'underline' }),
       ...(lineHeight && { lineHeight }),

@@ -31,7 +31,7 @@ export interface SXProps {
   gapY?: number;
   fld?: 'row' | 'column';
   justify?: JustifyContentType;
-  item?: AlignItemsType;
+  items?: AlignItemsType;
   self?: AlignSelfType;
   bw?: number;
   bc?: string;
@@ -86,7 +86,7 @@ export const parseSx = (sx: SXProps = {}): ViewStyle & TextStyle => {
   if (sx.flex !== undefined) style.flex = sx.flex;
   if (sx.fld) style.flexDirection = sx.fld;
   if (sx.justify) style.justifyContent = sx.justify;
-  if (sx.item) style.alignItems = sx.item;
+  if (sx.items) style.alignItems = sx.items;
   if (sx.self) style.alignSelf = sx.self;
   if (sx.gap) style.gap = sx.gap;
   if (sx.gapX) style.columnGap = sx.gapX;

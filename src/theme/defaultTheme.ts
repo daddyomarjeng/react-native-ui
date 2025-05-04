@@ -8,17 +8,18 @@ export interface ThemeColors {
   info: string;
   light: string;
   dark: string;
+  muted: string;
   text: string;
   background: string;
   disabledButtonBg: string;
   disabledButtonText: string;
 }
 
-export interface Theme {
+export interface ThemeType {
   colors: ThemeColors;
 }
 
-export const defaultTheme: Theme = {
+export const defaultTheme: ThemeType = {
   colors: {
     primary: '#007bff',
     secondary: '#6c757d',
@@ -27,11 +28,13 @@ export const defaultTheme: Theme = {
     warning: '#ffc107',
     info: '#17a2b8',
     light: '#f8f9fa',
+    muted: '#ECECEC',
     dark: '#343a40',
-    text: '#212529',
+    text: '#111',
     background: '#ffffff',
 
+    //button
     disabledButtonBg: '#6c757d',
-    disabledButtonText: '',
+    disabledButtonText: '#ccc',
   },
 };
