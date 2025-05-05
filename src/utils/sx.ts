@@ -1,4 +1,3 @@
-// sx.ts
 import { type TextStyle, type ViewStyle } from 'react-native';
 import { sizes } from './sizes'; // import your sizes
 

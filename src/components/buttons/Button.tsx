@@ -15,11 +15,21 @@ import { useTheme } from '../../theme/ThemeContext';
 import { resolveColor } from '../../utils/colors';
 
 /**
+ * Variant types for button
+ */
+type ButtonVariant = 'fill' | 'outline' | 'ghost';
+
+/**
  * Props for the Button component
  */
 export interface ButtonProps extends TouchableOpacityProps, StyleProp {
   /** Text to display inside the button */
   title?: string;
+
+  /** Variant of the button style
+   * @default 'fill'
+   */
+  variant?: ButtonVariant;
 
   /** Additional style for the button container */
   style?: ViewStyle | ViewStyle[];
@@ -78,6 +88,12 @@ export interface ButtonProps extends TouchableOpacityProps, StyleProp {
  * ```
  *
  * @example
+ * With custom variant:
+ * ```tsx
+ * <Button title="Hello" variant="outline" />
+ * ```
+ *
+ * @example
  * With custom colors:
  * ```tsx
  * <Button title="Danger" bg="red" textColor="#fff" />
@@ -114,24 +130,61 @@ export const Button = forwardRef<View, ButtonProps>(
       textColor,
       disabledBg,
       disabledTextColor,
+      variant = 'fill',
       ...rest
     },
     ref
   ) => {
     const { colors } = useTheme();
 
-    const backgroundColor = disabled
-      ? resolveColor(disabledBg ?? colors?.disabledButtonBg)
-      : resolveColor(bg ?? colors?.primary);
+    const baseColor = resolveColor(bg ?? colors.primary);
+    const disabledBgColor = resolveColor(disabledBg ?? colors.disabledButtonBg);
+    const disabledTextColorResolved = resolveColor(
+      disabledTextColor ?? colors.disabledButtonText
+    );
 
-    const finalTextColor = disabled
-      ? resolveColor(disabledTextColor ?? colors?.disabledButtonText)
-      : resolveColor(textColor ?? colors?.text);
+    let backgroundColor: string | undefined;
+    let borderColor: string | undefined;
+    let borderWidth: number = 0;
+    let finalTextColor: string | undefined;
 
-    const containerStyles = [{ backgroundColor }, parseSx({ p: 10, rounded: 5, ...sx }), style];
+    if (disabled) {
+      backgroundColor = disabledBgColor;
+      finalTextColor = disabledTextColorResolved;
+      borderColor = 'transparent';
+      borderWidth = 0;
+    } else {
+      switch (variant) {
+        case 'fill':
+          backgroundColor = baseColor;
+          finalTextColor = textColor ? resolveColor(textColor) : '#ffffff';
+          borderColor = 'transparent';
+          borderWidth = 0;
+          break;
+
+        case 'outline':
+          backgroundColor = 'transparent';
+          finalTextColor = textColor ? resolveColor(textColor) : baseColor;
+          borderColor = baseColor;
+          borderWidth = 1;
+          break;
+
+        case 'ghost':
+          backgroundColor = 'transparent';
+          finalTextColor = textColor ? resolveColor(textColor) : baseColor;
+          borderColor = 'transparent';
+          borderWidth = 0;
+          break;
+      }
+    }
+
+    const containerStyles = [
+      { backgroundColor, borderColor, borderWidth },
+      parseSx({ p: 10, rounded: 5, ...sx }),
+      style,
+    ];
 
     const { parsedSx } = mergeSx(rest);
-
     return (
       <TouchableOpacity
         ref={ref}
@@ -144,9 +197,17 @@ export const Button = forwardRef<View, ButtonProps>(
           {leftComponent && <View style={styles.side}>{leftComponent}</View>}
 
           {loading ? (
-            <ActivityIndicator size="small" color={finalTextColor} style={styles.loader} />
+            <ActivityIndicator
+              size="small"
+              color={finalTextColor}
+              style={styles.loader}
+            />
           ) : title ? (
-            <Text size={textSize} color={finalTextColor} style={[styles.text, textStyle || {}]}>
+            <Text
+              size={textSize}
+              color={finalTextColor}
+              style={[styles.text, textStyle || {}]}
+            >
               {title}
             </Text>
           ) : (
@@ -167,10 +228,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   side: {
-    marginHorizontal: 4,
+    marginHorizontal: sizes.rs(4),
   },
   loader: {
-    marginHorizontal: 4,
+    marginHorizontal: sizes.rs(4),
   },
   text: {
     textAlign: 'center',

@@ -23,10 +23,15 @@ const customTheme: ThemeType = {
 export default function App() {
   return (
     <ThemeProvider theme={customTheme}>
-      <Box style={[styles.container, styles.container]} backgroundColor={'lightblue'} sx={{}}>
-        <Text sx={{}}>Result: {result}</Text>
+      <Box
+        style={[styles.container, styles.container]}
+        backgroundColor={'lightblue'}
+        sx={{}}
+      >
+        <Text sx={{ fw: 'bold' }}>Result: {result}</Text>
         <RNText>Result: {result}</RNText>
-        <Button title="Hello" p={100} />
+        <Button title="Hello" p={10} variant="outline" width={10} />
+        <Button title="Loading Button" p={10} variant="outline" loading />
       </Box>
     </ThemeProvider>
   );

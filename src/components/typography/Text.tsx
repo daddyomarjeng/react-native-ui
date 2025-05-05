@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import { Text as RNText, type TextStyle } from 'react-native';
 import { fontSizes, sizes } from '../../utils/sizes';
-import { mergeSx, parseSx, type StyleProp, type SXProps } from '../../utils/sx';
+import { mergeSx, type StyleProp, type SXProps } from '../../utils/sx';
 import { useTheme } from '../../theme';
 
 /** Supported text alignment options */
@@ -112,7 +112,7 @@ export interface TextProps extends StyleProp {
 export const Text = forwardRef<RNText, TextProps>(
   (
     {
-      sx,
+      // sx,
       size = 'base',
       color,
       align,
@@ -139,10 +139,9 @@ export const Text = forwardRef<RNText, TextProps>(
       ...(letterSpacing && { letterSpacing }),
     };
 
-    const sxStyles = sx ? parseSx(sx) : {};
     const { parsedSx } = mergeSx(rest);
     return (
-      <RNText ref={ref} {...rest} style={[sxStyles, parsedSx, textStyle, style]}>
+      <RNText ref={ref} {...rest} style={[parsedSx, textStyle, style]}>
         {children}
       </RNText>
     );
